@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { deletePostById, getPostById } from '../api';
-import { IAdvertisement, IPost } from '../api/types';
+import { IPost } from '../api/types';
 import NotFound from '../components/NotFound';
 import Tag from '../components/Tag';
 
@@ -61,8 +61,9 @@ const Text = styled.p`
 
 const Post = () => {
   const params = useParams();
-  const { postId } = params;
+  const { postId = '' } = params;
   const [post, setPost] = useState<IPost | null>(null);
+  const navigate = useNavigate();
 
   const fetchPostById = async () => {
     const { data } = await getPostById(postId);
@@ -75,7 +76,7 @@ const Post = () => {
   }, []);
 
   if (!post) {
-    return <NotFound />
+    return <NotFound />;
   }
 
   const clickDeleteButton = () => {

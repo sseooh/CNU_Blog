@@ -85,28 +85,28 @@ const SaveButton = styled.button`
 `;
 
 const Write = () => {
-    const { state } = useLocation();
-    const isEdit = state?.postId;
-
-    const fetchPostById = async (postId: string) => {
-        const { data } = await getPostById(postId);
-        const { post } = data;
-        setTitle(post.title);
-        setContent(post.contents);
-        setTag(post.tag);
-    };
-
-    useEffect(() => {
-        if (isEdit) {
-            fetchPostById(state.postId);
-        }
-    }, []);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tag, setTag] = useState<TAG>(TAG.REACT);
   const tagList = Object.keys(TAG);
+  const { state } = useLocation();
+  const isEdit = state?.postId;
 
-  const handleChangeTitle = (event: ChangeEvent<HTMLInputElemnet>) => {
+  const fetchPostById = async (postId: string) => {
+      const { data } = await getPostById(postId);
+      const { post } = data;
+      setTitle(post.title);
+      setContent(post.content);
+      setTag(post.tag);
+  };
+
+  useEffect(() => {
+      if (isEdit) {
+          fetchPostById(state.postId);
+      }
+      }, []);
+
+  const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
       setTitle((event.target.value));
   };
   const handleChangeContent = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -133,7 +133,7 @@ const Write = () => {
       }
 
       if (isEdit) {
-          requestCreatePost();
+          requestUpdatePost();
       } else {
           requestCreatePost();
       }
